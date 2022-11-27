@@ -15,11 +15,10 @@ const inpMethodThird = document.querySelector("#method-third");
 // 계산결과 (총납입금액, 총이자)
 const valuePayment = document.querySelector(".value-payment");
 const valueInterest = document.querySelector(".value-interest");
-
-
+const 회차 = 12*inpLoanPeriod.value
 const 세부항목 = {원금:0 , 이자:0 , 납입금액:0 , 잔금:0}
 const 세부항목계산 = function() {
-  for (let 회차 = 0; 회차 < 12*inpLoanPeriod.value; 회차++) {
+  for (let i = 0; i < 회차; i++) {
   /* for(let i = 0; i<5 ; i++){ */
     for(key in 세부항목){
       // console.log(key)
@@ -35,8 +34,9 @@ const 세부항목계산 = function() {
         세부항목['잔금']=잔금실행()
       } 
     }
-  }
+  }  
 }
+const json = JSON.stringify(object.values(세부항목))
 
 
 
@@ -129,21 +129,29 @@ inpLoanPeriod.addEventListener('blur', range)
     } else if (inpMethodThird.checked === true){
       원리금균등상환()
     }
+    const json = JSON.stringify(세부항목)
     테이블만드는함수()
   } 
 
 
   function 테이블만드는함수() {
-    document.write('<table border="1">');
-    for (let 회차 = 0; 회차 < 12*inpLoanPeriod.value; 회차++) {
-      document.write('<tr>');
-      document.write('<td>');
-      document.write(세부항목['원금'], 세부항목['이자'],세부항목['납입금액'] , 세부항목['잔금']);
-      document.write('</td>')
-      document.write('</tr>')
+    const resultTable = document.querySelector('.table-detailed-result')
+    const myTr = document.createElement('tr') 
+    const dataContentToTable = document.createTextNode(object.values(세부항목)) 
+    for (let 회차 = 0; 회차 < 12*inpLoanPeriod.value; 회차++){
+      resultTable.appendChild(myTr)
+      document.body.appendChild(dataContentToTable)
     }
-    document.write('</table>');  
-  }
+    // document.createElement('<table border="1">');
+    // for (let 회차 = 0; 회차 < 12*inpLoanPeriod.value; 회차++) {
+    //   document.write('<tr>');
+    //   document.write('<td>');
+    //   document.write(세부항목['원금'], 세부항목['이자'],세부항목['납입금액'] , 세부항목['잔금']);
+    //   document.write('</td>')
+    //   document.write('</tr>')
+    }
+  
+  
 
   
   function 인풋리셋함수() {
